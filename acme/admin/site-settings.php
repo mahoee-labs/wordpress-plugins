@@ -19,13 +19,13 @@ function mahoee_acme_site_settings_page()
     }
 
     $domain = get_option('mahoee_acme_domain');
-    $status = get_option('mahoee_acme_status');
 
     if (isset($_POST['mahoee_acme_get_certificate'])) {
         // Perform the certificate check and download
         mahoee_acme_check_certificate($domain);
     }
 
+    $status = get_option('mahoee_acme_status');
     $order = get_option('mahoee_acme_order');
     $token = get_option('mahoee_acme_token');
     $digest = get_option('mahoee_acme_digest');
