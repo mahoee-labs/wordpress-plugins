@@ -1,0 +1,73 @@
+name: WordPress Plugin Release
+
+on:
+  push:
+    branches:
+      - main # Set the main branch of your repository
+
+jobs:
+  mahoee-tracking:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.modified, 'mahoee-tracking') }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+          extensions: mbstring, zip, intl, curl
+
+      - name: Install Composer Dependencies
+        run: cd mahoee-tracking && composer install
+
+      - name: Get Plugin Version
+        id: get_version_tracking
+        run: |
+          echo "##[set-output name=version;]$(grep -o 'Version: [0-9.]\+' mahoee-tracking/plugin.php | awk '{print $2}')"
+
+      - name: Create Release for mahoee-tracking
+        id: create_release_tracking
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_version_tracking.outputs.version }}
+          release_name: Release ${{ steps.get_version_tracking.outputs.version }}
+          body: Release ${{ steps.get_version_tracking.outputs.version }}
+          draft: false
+          prerelease: false
+
+  mahoee-acme:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.modified, 'mahoee-acme') }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+          extensions: mbstring, zip, intl, curl
+
+      - name: Install Composer Dependencies
+        run: cd mahoee-acme && composer install
+
+      - name: Get Plugin Version
+        id: get_version_acme
+        run: |
+          echo "##[set-output name=version;]$(grep -o 'Version: [0-9.]\+' mahoee-acme/plugin.php | awk '{print $2}')"
+
+      - name: Create Release for mahoee-acme
+        id: create_release_acme
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_version_acme.outputs.version }}
+          release_name: Release ${{ steps.get_version_acme.outputs.version }}
+          body: Release ${{ steps.get_version_acme.outputs.version }}
+          draft: false
+          prerelease: false
