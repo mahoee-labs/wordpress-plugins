@@ -90,4 +90,4 @@ function mahoee_acme_site_menu()
 add_action('admin_menu', 'mahoee_acme_site_menu');
 
 // Handle ACME requests and challenges
-add_action('init', 'mahoee_acme_handle_http_challenge');
+add_action('init', 'mahoee_acme_serve_challenge');
