@@ -1,0 +1,14 @@
+{
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/rafaelpivato/yaac"
+    }
+  ],
+  "require": {
+    "afosto/yaac": "dev-mahoee-labs",
+    "league/flysystem": "^1.1"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
