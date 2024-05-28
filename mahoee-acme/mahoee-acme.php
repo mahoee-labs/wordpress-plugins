@@ -5,7 +5,7 @@ Plugin URI: https://github.com/mahoee-labs/wordpress-plugins/
 Author: Mahoee
 Author URI: http://mahoee.com/
 Description: Manage Let's Encrypt certificates for a multisite network.
-Version: 0.1.1
+Version: 0.1.2
 License: MIT License
 License URI: https://opensource.org/licenses/MIT
 Text Domain: mahoee-acme
