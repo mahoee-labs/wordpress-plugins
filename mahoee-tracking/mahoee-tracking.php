@@ -5,7 +5,7 @@ Plugin URI: https://github.com/mahoee-labs/wordpress-plugins/
 Author: Mahoee
 Author URI: http://mahoee.com/
 Description: Plugin to record visits to multisite network sites and provide reports.
-Version: 0.2.4
+Version: 0.2.5
 License: MIT License
 License URI: https://opensource.org/licenses/MIT
 Text Domain: mahoee-tracking

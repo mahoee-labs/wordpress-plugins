@@ -6,13 +6,6 @@ on:
       - main
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug Modified Files
-        run: |
-          echo "Modified Files: ${{ toJson(github.event) }}"
-
   mahoee-tracking:
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.event.head_commit.message, 'Release') && endsWith(github.event.head_commit.message, 'mahoee-tracking') }}
