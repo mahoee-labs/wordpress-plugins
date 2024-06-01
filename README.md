@@ -9,6 +9,7 @@ For more information about Mahoee, visit our [website](https://mahoee.com).
 - [Plugins](#plugins)
   - [mahoee-tracking](#mahoee-tracking)
   - [mahoee-acme](#mahoee-acme)
+  - [mahoee-scheduling](#mahoee-scheduling)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -34,6 +35,15 @@ For more information about Mahoee, visit our [website](https://mahoee.com).
 - Easy integration with your WordPress site
 - Enhances site security with SSL/TLS encryption
 
+### mahoee-scheduling
+
+**mahoee-scheduling** will let you define scheduling for your business and let you add scheduling controls in your web site using shortcodes and custom HTML classes.
+
+#### Features:
+- Lets you configure business operating schedule
+- Provides shortcode to actiate scheduling on a page
+- Uses CSS selectors to toggle elements required for scheduling
+
 ## Installation
 
 To install any of the plugins, follow these steps:
@@ -56,6 +66,13 @@ To install any of the plugins, follow these steps:
 1. After activating the plugin, go to the plugin settings page in your WordPress admin dashboard.
 2. Follow the instructions to configure your Let's Encrypt account.
 3. Request a new certificate for your site and the plugin will handle the rest.
+
+### mahoee-scheduling
+
+1. After activating the plugin, go to the plugin settings page in your WordPress admin dashboard.
+2. Go do scheduling admin page and set working weekdays and shifts.
+3. Add shortcode to your page where you want scheduling to starts.
+4. Add CSS elements to the HTML blocks that need to be activated.
 
 ## Contributing
 
