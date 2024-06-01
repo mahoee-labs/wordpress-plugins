@@ -6,10 +6,18 @@ on:
       - main
 
 jobs:
-  mahoee-tracking:
+  release-plugin:
     runs-on: ubuntu-latest
-    if: ${{ startsWith(github.event.head_commit.message, 'Release') && endsWith(github.event.head_commit.message, 'mahoee-tracking') }}
+    if: ${{ startsWith(github.event.head_commit.message, 'Release') }}
     steps:
+      - name: Extract plugin name from commit message
+        id: extract_plugin
+        run: |
+          commit_message="${{ github.event.head_commit.message }}"
+          plugin_name=$(echo "${commit_message}" | awk '{print $2}')
+          echo "plugin_name=${plugin_name}" >> $GITHUB_ENV
+          echo "plugin_name=${plugin_name}"
+
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -21,29 +29,29 @@ jobs:
 
       - name: Install Composer Dependencies
         run: |
-          cd mahoee-tracking
+          cd ${{ env.plugin_name }}
           composer install
 
       - name: Get Plugin Version
-        id: get_version_tracking
+        id: get_version
         run: |
-          version=$(grep -o 'Version: [0-9.]\+' mahoee-tracking/mahoee-tracking.php | awk '{print $2}')
+          version=$(grep -o 'Version: [0-9.]\+' ${{ env.plugin_name }}/${{ env.plugin_name }}.php | awk '{print $2}')
           echo "version=${version}" >> $GITHUB_ENV
           echo "##[set-output name=version;]${version}"
 
-      - name: Create zip file of mahoee-tracking
+      - name: Create zip file of ${{ env.plugin_name }}
         run: |
-          zip -r mahoee-tracking-${{ steps.get_version_tracking.outputs.version }}.zip mahoee-tracking
+          zip -r ${{ env.plugin_name }}-${{ steps.get_version.outputs.version }}.zip ${{ env.plugin_name }}
 
-      - name: Create Release for mahoee-tracking
-        id: create_release_tracking
+      - name: Create Release for ${{ env.plugin_name }}
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: mahoee-tracking-${{ steps.get_version_tracking.outputs.version }}
-          release_name: Mahoee Tracking ${{ steps.get_version_tracking.outputs.version }}
-          body: Release ${{ steps.get_version_tracking.outputs.version }}
+          tag_name: ${{ env.plugin_name }}-${{ steps.get_version.outputs.version }}
+          release_name: ${{ env.plugin_name }} ${{ steps.get_version.outputs.version }}
+          body: Release ${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
 
@@ -52,58 +60,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release_tracking.outputs.upload_url }}
-          asset_path: ./mahoee-tracking-${{ steps.get_version_tracking.outputs.version }}.zip
-          asset_name: mahoee-tracking-${{ steps.get_version_tracking.outputs.version }}.zip
-          asset_content_type: application/zip
-
-  mahoee-acme:
-    runs-on: ubuntu-latest
-    if: ${{ startsWith(github.event.head_commit.message, 'Release') && endsWith(github.event.head_commit.message, 'mahoee-acme') }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.0"
-          extensions: mbstring, zip, intl, curl
-
-      - name: Install Composer Dependencies
-        run: |
-          cd mahoee-acme
-          composer install
-
-      - name: Get Plugin Version
-        id: get_version_acme
-        run: |
-          version=$(grep -o 'Version: [0-9.]\+' mahoee-acme/mahoee-acme.php | awk '{print $2}')
-          echo "version=${version}" >> $GITHUB_ENV
-          echo "##[set-output name=version;]${version}"
-
-      - name: Create zip file of mahoee-acme
-        run: |
-          zip -r mahoee-acme-${{ steps.get_version_acme.outputs.version }}.zip mahoee-acme
-
-      - name: Create Release for mahoee-acme
-        id: create_release_acme
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: mahoee-acme-${{ steps.get_version_acme.outputs.version }}
-          release_name: Mahoee ACME ${{ steps.get_version_acme.outputs.version }}
-          body: Release ${{ steps.get_version_acme.outputs.version }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release_acme.outputs.upload_url }}
-          asset_path: ./mahoee-acme-${{ steps.get_version_acme.outputs.version }}.zip
-          asset_name: mahoee-acme-${{ steps.get_version_acme.outputs.version }}.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ env.plugin_name }}-${{ steps.get_version.outputs.version }}.zip
+          asset_name: ${{ env.plugin_name }}-${{ steps.get_version.outputs.version }}.zip
           asset_content_type: application/zip
