@@ -1,0 +1,39 @@
+.mahoee-scheduling-block,
+.mahoee-scheduling-block * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.mahoee-scheduling-block {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+.mahoee-scheduling-block .option {
+  display: flex;
+  border: 2px solid #d2d2d2;
+  background-color: #e2e2e2;
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  width: 10rem;
+  padding: 10px;
+  gap: 5px;
+}
+
+.mahoee-scheduling-block .option .weekday {
+  font-weight: bold;
+}
+
+.mahoee-scheduling-block .option .date {
+  font-size: 0.8rem;
+}
+
+.mahoee-scheduling-block .option .shift {
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}

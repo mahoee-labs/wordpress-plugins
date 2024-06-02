@@ -21,6 +21,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 define('MAHOEE_SCHEDULING_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
 require_once MAHOEE_SCHEDULING_PLUGIN_DIR . 'admin/site-settings.php';
+require_once MAHOEE_SCHEDULING_PLUGIN_DIR . 'web/shortcode.php';
 
 // Site admin menu
 function mahoee_scheduling_site_menu()
@@ -36,3 +37,10 @@ function mahoee_scheduling_site_menu()
     );
 }
 add_action('admin_menu', 'mahoee_scheduling_site_menu');
+
+// Register the shortcode
+function mahoee_scheduling_register_shortcode()
+{
+    add_shortcode('scheduling_block', 'mahoee_scheduling_shortcode_callback');
+}
+add_action('init', 'mahoee_scheduling_register_shortcode');
