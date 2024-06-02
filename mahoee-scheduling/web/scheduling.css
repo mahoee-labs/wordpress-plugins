@@ -7,6 +7,21 @@
 
 .mahoee-scheduling-block {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+.mahoee-scheduling-block .slots {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+.mahoee-scheduling-block .actions {
+  display: flex;
   justify-content: center;
   padding: 10px;
   gap: 10px;
@@ -22,6 +37,12 @@
   width: 10rem;
   padding: 10px;
   gap: 5px;
+  cursor: pointer;
+}
+
+.mahoee-scheduling-block[data-state="confirming"]
+  .option[data-selected="false"] {
+  opacity: 0.3;
 }
 
 .mahoee-scheduling-block .option .weekday {
@@ -36,4 +57,11 @@
   font-weight: bold;
   font-size: 0.8rem;
   text-transform: uppercase;
+}
+
+.mahoee-scheduling-block .actions button {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
 }

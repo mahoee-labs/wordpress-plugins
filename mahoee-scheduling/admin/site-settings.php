@@ -51,8 +51,8 @@ function mahoee_scheduling_recurring_section_callback()
 function mahoee_scheduling_recurring_weekdays_callback()
 {
     $options = get_option('mahoee_scheduling_recurring');
-    $weekdays = isset($options['weekdays']) ? $options['weekdays'] : [];
-    $days = [
+    $picked = isset($options['weekdays']) ? $options['weekdays'] : [];
+    $labels_values = [
         0 => 'Domingo',
         1 => 'Segunda-feira',
         2 => 'Terça-feira',
@@ -62,22 +62,22 @@ function mahoee_scheduling_recurring_weekdays_callback()
         6 => 'Sábado',
     ];
 
-    foreach ($days as $value => $day) {
-        echo '<label><input type="checkbox" name="mahoee_scheduling_recurring[weekdays][]" value="' . $value . '" ' . (in_array($value, $weekdays) ? 'checked' : '') . '> ' . $day . '</label><br>';
+    foreach ($labels_values as $value => $label) {
+        echo '<label><input type="checkbox" name="mahoee_scheduling_recurring[weekdays][]" value="' . $value . '" ' . (in_array($value, $picked) ? 'checked' : '') . '> ' . $label . '</label><br>';
     }
 }
 
 function mahoee_scheduling_recurring_shifts_callback()
 {
     $options = get_option('mahoee_scheduling_recurring');
-    $shifts = isset($options['shifts']) ? $options['shifts'] : [];
-    $days = [
+    $picked = isset($options['shifts']) ? $options['shifts'] : [];
+    $labels_values = [
         0 => 'Manhã',
         1 => 'Tarde',
         2 => 'Noite',
     ];
 
-    foreach ($days as $value => $shift) {
-        echo '<label><input type="checkbox" name="mahoee_scheduling_recurring[shifts][]" value="' . $value . '" ' . (in_array($value, $shifts) ? 'checked' : '') . '> ' . $shift . '</label><br>';
+    foreach ($labels_values as $value => $label) {
+        echo '<label><input type="checkbox" name="mahoee_scheduling_recurring[shifts][]" value="' . $value . '" ' . (in_array($value, $picked) ? 'checked' : '') . '> ' . $label . '</label><br>';
     }
 }

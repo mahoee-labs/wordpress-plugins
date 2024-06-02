@@ -7,25 +7,17 @@ function mahoee_scheduling_shortcode_callback()
     wp_enqueue_script('mahoee-scheduling', plugin_dir_url(__FILE__) . 'scheduling.js', array('jquery'), null, true);
     wp_enqueue_style('mahoee-scheduling', plugin_dir_url(__FILE__) . 'scheduling.css');
 
-    // Debugging: Ensure the CSS is enqueued
-    if (wp_style_is('mahoee-scheduling', 'enqueued')) {
-        echo 'CSS is enqueued.';
-    } else {
-        echo 'CSS is NOT enqueued.';
-    }
-
     // Get site weekdays and shifts
     $options = get_option('mahoee_scheduling_recurring');
     $weekdays = isset($options['weekdays']) ? $options['weekdays'] : [];
     $shifts = isset($options['shifts']) ? $options['shifts'] : [];
-    $timezone = isset($options['timezone']) ? $options['timezone'] : '';
     $weekdays_labels = [
         0 => 'Domingo',
-        1 => 'Segunda-feira',
-        2 => 'Terça-feira',
-        3 => 'Quarta-feira',
-        4 => 'Quinta-feira',
-        5 => 'Sexta-feira',
+        1 => 'Segunda',
+        2 => 'Terça',
+        3 => 'Quarta',
+        4 => 'Quinta',
+        5 => 'Sexta',
         6 => 'Sábado',
     ];
     $shifts_labels = [
@@ -39,9 +31,8 @@ function mahoee_scheduling_shortcode_callback()
     $pick_count = 3;
     $required_slots = ($pick_count + 1) * $max_random_skip;
 
-    // Determine current date and time
-    date_default_timezone_set($timezone ? $timezone : 'UTC');
-    $now = new DateTime();
+    $site_timezone = wp_timezone();
+    $now = new DateTime('now', $site_timezone);
     $current_weekday = (int) $now->format('w');
     $current_time = (int) $now->format('G');
 
@@ -84,15 +75,21 @@ function mahoee_scheduling_shortcode_callback()
     }
 
     // Generate the HTML output
-    $output = '<div class="mahoee-scheduling-block">';
+    $output = '<div class="mahoee-scheduling-block" data-state="initial">';
+    $output .= '<div class="slots">';
     foreach ($selected_slots as $slot) {
         list($date, $weekday_label, $shift_label) = $slot;
-        $output .= '<div class="option">';
+        $output .= '<div class="option" data-selected="false">';
         $output .= '<span class="weekday">' . esc_html($weekday_label) . '</span>';
         $output .= '<span class="date">' . esc_html($date) . '</span>';
         $output .= '<span class="shift">' . esc_html($shift_label) . '</span>';
         $output .= '</div>';
     }
+    $output .= '</div>';
+    $output .= '<div class="actions">';
+    $output .= '<button class="confirm" disabled>Confirmar</button>';
+    $output .= '<button class="change" disabled>Mudar</button>';
+    $output .= '</div>';
     $output .= '</div>';
 
     // Return output string
