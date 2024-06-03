@@ -1,8 +1,17 @@
 <?php
 
-// Shortcode callback function
-function mahoee_scheduling_shortcode_callback()
+function mahoee_scheduling_options_shortcode_callback($atts)
 {
+    // Set default attributes and merge with provided ones
+    $atts = shortcode_atts(
+        array(
+            'count' => 3,
+        ),
+        $atts,
+        'scheduling_options'
+    );
+    $pick_count = intval($atts['count']);
+
     // Enqueue required resources
     wp_enqueue_script('mahoee-scheduling', plugin_dir_url(__FILE__) . 'scheduling.js', array('jquery'), null, true);
     wp_enqueue_style('mahoee-scheduling', plugin_dir_url(__FILE__) . 'scheduling.css');
@@ -21,14 +30,13 @@ function mahoee_scheduling_shortcode_callback()
         6 => 'Sábado',
     ];
     $shifts_labels = [
-        0 => 'de manhã',
-        1 => 'de tarde',
-        2 => 'de noite',
+        0 => 'manhã',
+        1 => 'tarde',
+        2 => 'noite',
     ];
 
     $min_random_skip = 2;
     $max_random_skip = 5;
-    $pick_count = 3;
     $required_slots = ($pick_count + 1) * $max_random_skip;
 
     $site_timezone = wp_timezone();
@@ -86,9 +94,35 @@ function mahoee_scheduling_shortcode_callback()
         $output .= '</div>';
     }
     $output .= '</div>';
+    $output .= '</div>';
+
+    // Return output string
+    return $output;
+}
+
+function mahoee_scheduling_actions_shortcode_callback($atts)
+{
+    // Set default attributes and merge with provided ones
+    $atts = shortcode_atts(
+        array(
+            'show_change' => 'true',
+        ),
+        $atts,
+        'scheduling_actions'
+    );
+    $show_change = filter_var($atts['show_change'], FILTER_VALIDATE_BOOLEAN);
+
+    // Enqueue required resources
+    wp_enqueue_script('mahoee-scheduling', plugin_dir_url(__FILE__) . 'scheduling.js', array('jquery'), null, true);
+    wp_enqueue_style('mahoee-scheduling', plugin_dir_url(__FILE__) . 'scheduling.css');
+
+    // Generate the HTML output
+    $output = '<div class="mahoee-scheduling-block" data-state="initial">';
     $output .= '<div class="actions">';
     $output .= '<button class="confirm" disabled>Confirmar</button>';
-    $output .= '<button class="change" disabled>Mudar</button>';
+    if ($show_change) {
+        $output .= '<button class="change" disabled>Mudar</button>';
+    }
     $output .= '</div>';
     $output .= '</div>';
 

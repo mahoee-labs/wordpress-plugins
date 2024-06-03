@@ -41,6 +41,7 @@ add_action('admin_menu', 'mahoee_scheduling_site_menu');
 // Register the shortcode
 function mahoee_scheduling_register_shortcode()
 {
-    add_shortcode('scheduling_block', 'mahoee_scheduling_shortcode_callback');
+    add_shortcode('scheduling_options', 'mahoee_scheduling_options_shortcode_callback');
+    add_shortcode('scheduling_actions', 'mahoee_scheduling_actions_shortcode_callback');
 }
 add_action('init', 'mahoee_scheduling_register_shortcode');
